@@ -2,26 +2,58 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { AppleLogo, FacebookLogo, GoogleLogo } from '../components/common/Svgs'
 import { useNavigation } from '@react-navigation/native'
-import AuthInput from '../components/common/AuthInput'
 import Header from '../components/Header'
-import { Formik } from 'formik'
 import { IRegistr } from '../types/data'
 import { FormButton } from '../components/common/FormButton/FormButton'
 import { Space } from '../components/common/Space'
 import useAppDispatch from '../hooks/useAppDispatch'
 import { registerAction } from '../state/user/action'
-import { getUser } from '../state/user/selectors'
 import R from '../res'
-import useAppSelector from '../hooks/useAppSelector'
 import { requir, validator, email, tel } from '../utils/validators'
 import Body from '../components/common/Body'
+import Input from '../components/common/Input'
 
 export default function Register() {
     const [error, setError] = useState('')
     const navigation = useNavigation()
     const dispatch = useAppDispatch()
-    const { loading } = useAppSelector(getUser)
-
+    const [data,setData] = useState([
+        {
+            label:"E-mail*",
+            placeholder:"Введите e-mail",
+            keyboardType:"email-address",
+            position:"top",
+            name:"email",
+            error:'',
+        },
+        {
+            label:"Номер телефона*",
+            placeholder:"Введите номер телефона",
+            keyboardType:"phone-pad",
+            position:"center",
+            name:"phone",
+            error:'',
+            maxLength:11
+        },
+        {
+            value:'',
+            label:"Пароль*",
+            placeholder:"Введите пароль",
+            secureTextEntry:true,
+            position:"center",
+            name:"password",
+            error:'',
+        },
+        {
+            label:"Повторите пароль*",
+            placeholder:"Повторите пароль",
+            secureTextEntry:true,
+            position:"bottom",
+            name:"passwordConfirmation",
+            error:'',
+            value:''
+        }
+    ])
     const initialValues: IRegistr = {
         email: '',
         phone: '',
@@ -43,54 +75,38 @@ export default function Register() {
             }),
         )
     }
+    const handelChange = (value:string,index:any) =>{
+        console.log(value,index)
+        let item = [...data]
+        //@ts-ignore
+        item[index].value = value
+        setData(item)
+    }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={submit}>
-            {() => (
                 <View style={styles.container}>
                     <Header title="Регистрация" />
+                    {data.map((elm,i)=>{
+                        return <Input 
+                            label = {elm.label}
+                            placeholder = {elm.placeholder}
+                            keyboardType = {elm.keyboardType}
+                            position = {elm.position}
+                            name = {elm.name}
+                            maxLength = {elm.maxLength}
+                            value = {elm.value}
+                            error = {elm.error}
+                            onChangeText = {(e:any)=>handelChange(e,i)}
+                        />
+                    })
 
-                    <AuthInput
-                        label="E-mail*"
-                        placeholder="Введите e-mail"
-                        keyboardType="email-address"
-                        position="top"
-                        name="email"
-                        validate={validator(email)}
-                    />
-
-                    <AuthInput
-                        label="Номер телефона*"
-                        placeholder="Введите номер телефона"
-                        keyboardType="phone-pad"
-                        position="center"
-                        name="phone"
-                        maxLength={11}
-                        validate={validator(tel)}
-                    />
-                    <AuthInput
-                        label="Пароль*"
-                        placeholder="Введите пароль"
-                        // secureTextEntry
-                        position="center"
-                        name="password"
-                        validate={validator(requir)}
-                    />
-                    <AuthInput
-                        label="Повторите пароль*"
-                        placeholder="Повторите пароль"
-                        // secureTextEntry
-                        position="bottom"
-                        name="passwordConfirmation"
-                        validate={validator(requir)}
-                    />
-
+                    }
                     <Body size={12} bold>
                         {error}
                     </Body>
 
                     <Space height={20} />
-                    <FormButton text="ЗАРЕГИСТРИРОВАТЬСЯ" loading={loading} />
+                    <FormButton text="ЗАРЕГИСТРИРОВАТЬСЯ"  />
                     <Space height={20} />
 
                     <View style={styles.socialButtonsContainer}>
@@ -107,8 +123,6 @@ export default function Register() {
                         </View>
                     </View>
                 </View>
-            )}
-        </Formik>
     )
 }
 
