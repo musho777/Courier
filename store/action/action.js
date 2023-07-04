@@ -1,7 +1,7 @@
 import { email } from "../../src/utils/validators";
-import { ErrorConfirmEmail, ErrorLogin, ErrorReg } from "./errorAction";
-import { StartConfirmMail, StartLogin, startReg } from "./startAction";
-import { SuccessLogin, SuccessReg, SuccessVery } from "./successAction";
+import { ErrorConfirmEmail, ErrorLogin, ErrorReg, ErrorResetPassword } from "./errorAction";
+import { StartConfirmMail, StartLogin, startReg, StartResetPassword } from "./startAction";
+import { SuccessLogin, SuccessReg, SuccessResetPassword, SuccessVery } from "./successAction";
 
 let auth = 'http://92.51.39.155/api/v1/auth'
 const headers = {
@@ -95,5 +95,27 @@ export const LoginAction = (data) =>{
         .catch((error)=>{
             dispatch(ErrorLogin('network error'))
         })
+    }
+}
+
+export const ResetPasswordAction = (email) =>{
+    return (dispatch) =>{
+        dispatch(StartResetPassword())
+        let body = {
+            "email": email
+        };
+        fetch(`${auth}/forgot`, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(body),
+        })
+        .then(response => response.json())
+        .then((r)=>{
+            dispatch(SuccessResetPassword(r))
+        })
+        .catch((error)=>{
+            dispatch(ErrorResetPassword('network error'))
+        })
+        ;
     }
 }

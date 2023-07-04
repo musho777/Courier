@@ -18,3 +18,9 @@ export const ErrorLogin = (error) =>{
         error
     }
 }
+export const ErrorResetPassword = (error) =>{
+    return {
+        type:'ErrorResetPassword',
+        error
+    }
+}

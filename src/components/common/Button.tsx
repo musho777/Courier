@@ -68,6 +68,7 @@ const Button: React.FC<IProps> = ({ onPress, buttonType = 1, text, containerStyl
 
     return (
         <TouchableOpacity
+            disabled = {loading}
             activeOpacity={0.7}
             onPress={onPress}
             style={[{ marginBottom: 15, width: '100%' }, containerStyle]}>

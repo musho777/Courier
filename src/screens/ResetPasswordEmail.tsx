@@ -1,25 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Button from '../components/common/Button'
 import { useNavigation } from '@react-navigation/native'
-import AuthInput from '../components/common/AuthInput'
 import Header from '../components/Header'
+import Input from '../components/common/Input'
+import { email } from '../utils/validators'
+import { useDispatch, useSelector } from 'react-redux'
+import { ResetPasswordAction } from '../../store/action/action'
+import Body from '../components/common/Body'
 
 export default function ResetPasswordEmail() {
     const navigation = useNavigation()
-
+    const [data,setData] = useState({value:'',error:''})
+    const dispatch = useDispatch()
+    const {resetPassword} = useSelector((st:any)=>st)
+    const handelChange = (e:string) =>{
+        let item = {...data}
+        item.value = e
+        setData(item) 
+    }
+    const handelPress = () =>{
+        let item = {...data}
+        item.error = email(item.value)
+        if(item.error === ''){
+            //@ts-ignore
+           dispatch(ResetPasswordAction(item.value))
+        }
+        setData(item)
+    }
     return (
         <View style={styles.container}>
             <Header title="Восстановить пароль" />
 
-            <AuthInput
+            <Input
                 containerStyle={{ marginBottom: 17 }}
                 label="E-mail"
                 placeholder="Введите e-mail"
                 keyboardType="email-address"
+                value = {data.value}
+                error = {data.error}
+                onChangeText = {(e:string)=>handelChange(e)}
             />
-
-            <Button onPress={() => navigation.navigate('ResetPasswordSave')} text="ВОССТАНОВИТЬ ПАРОЛЬ" />
+            <Body size={12} bold>
+                {resetPassword.error}
+            </Body>
+            <Button loading = {resetPassword.loading} onPress={() => handelPress()} text="ВОССТАНОВИТЬ ПАРОЛЬ" />
         </View>
     )
 }

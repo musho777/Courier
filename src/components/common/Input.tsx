@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import Body from './Body'
 
@@ -19,6 +19,13 @@ const Input: React.FC<any> = ({
     ...attributes
 }) => {
     const [leftFocus, setLeftFocus] = useState(false)
+    const onFocus = useCallback(() => {
+        setLeftFocus(true)
+    }, [])
+
+    const onBlur = useCallback(() => {
+        setLeftFocus(false)
+    }, [])
 
     const containerStyles = [
         styles.inputBox,
@@ -46,8 +53,8 @@ const Input: React.FC<any> = ({
             )}
 
             <TextInput
-                // onFocus={onFocus}
-                // onBlur={onBlur}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 style={styles.input}
                 value={value}
                 placeholder={placeholder}

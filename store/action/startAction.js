@@ -14,3 +14,8 @@ export const StartLogin = () =>{
         type:'StartLogin'
     }
 }
+export const StartResetPassword = () =>{
+    return {
+        type:'StartResetPassword'
+    }
+}
