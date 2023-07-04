@@ -13,7 +13,7 @@ export default function ResetPasswordEmail() {
     const navigation = useNavigation()
     const [data,setData] = useState({value:'',error:''})
     const dispatch = useDispatch()
-    const {resetPassword} = useSelector((st:any)=>st)
+    const resetPassword = useSelector((st:any)=>st.resetPassword)
     const handelChange = (e:string) =>{
         let item = {...data}
         item.value = e

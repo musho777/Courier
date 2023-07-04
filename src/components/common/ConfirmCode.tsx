@@ -25,7 +25,7 @@ const ConfirmCodeField = () => {
 
     const blocks = useRef<TextInput[]>([])
     const navigation = useSmartNavigation()
-    const {auth} = useSelector((st:any)=>st)
+    const auth = useSelector((st:any)=>st.auth)
     useEffect(() => {
         BackgroundTimer.runBackgroundTimer(() => {
             setRemainingTime(prevTime => {

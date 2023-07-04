@@ -58,7 +58,7 @@ export default function Register() {
         }
     ])
 
-    const {auth} = useSelector((st:any)=>st)
+    const auth = useSelector((st:any)=>st.auth)
     const handelChange = (value:string,index:any) =>{
         let item = [...data]
         //@ts-ignore

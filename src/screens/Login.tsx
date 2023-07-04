@@ -18,7 +18,7 @@ export default function Login() {
         {value:'',error:''},
         {value:'',error:''},
     ])
-    const {auth} = useSelector((st:any)=>st)
+    const auth = useSelector((st:any)=>st.auth)
     const dispatch = useDispatch()
     const handelChnage = (i:number,value:string) =>{
         let item  = [...data]
