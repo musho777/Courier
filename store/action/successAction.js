@@ -4,3 +4,15 @@ export const SuccessReg = (data) =>{
         data
     }
 }
+export const SuccessConfirmMail = (data) =>{
+    return {
+        type:'SuccessConfirmMail',
+        data
+    }
+}
+export const SuccessLogin = () =>{
+    return {
+        type:'SuccessLogin',
+        data
+    }
+}

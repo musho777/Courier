@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { StyleSheet, TextProps, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, TextProps, TouchableOpacity, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Body from './Body'
 
@@ -8,9 +8,10 @@ interface IProps extends TextProps {
     text?: string
     containerStyle?: object
     renderContent?: () => ReactNode
+    loading?: boolean
 }
 
-const Button: React.FC<IProps> = ({ onPress, buttonType = 1, text, containerStyle, renderContent }) => {
+const Button: React.FC<IProps> = ({ onPress, buttonType = 1, text, containerStyle, renderContent ,loading,}) => {
     let configurations: {
         backgroundColors: string[]
         color: string
@@ -71,9 +72,7 @@ const Button: React.FC<IProps> = ({ onPress, buttonType = 1, text, containerStyl
             onPress={onPress}
             style={[{ marginBottom: 15, width: '100%' }, containerStyle]}>
             <Component>
-                {renderContent ? (
-                    renderContent()
-                ) : (
+            {loading ? (<ActivityIndicator />) : (
                     <Body semiBold color={configurations.color} size={15}>
                         {text}
                     </Body>

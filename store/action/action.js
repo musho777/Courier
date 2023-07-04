@@ -1,15 +1,16 @@
-import { ErrorReg } from "./errorAction";
-import { startReg } from "./startAction";
-import { SuccessReg } from "./successAction";
+import { email } from "../../src/utils/validators";
+import { ErrorConfirmEmail, ErrorLogin, ErrorReg } from "./errorAction";
+import { StartConfirmMail, StartLogin, startReg } from "./startAction";
+import { SuccessLogin, SuccessReg, SuccessVery } from "./successAction";
 
 let auth = 'http://92.51.39.155/api/v1/auth'
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
 export const RegAction = (data) =>{
     return (dispatch) =>{
         dispatch(startReg())
-        const headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        };
         let body = {
             "email": data.email,
             "phone": data.phone,
@@ -37,8 +38,62 @@ export const RegAction = (data) =>{
             }
         })
         .catch((error)=>{
-            console.log(error)
             dispatch(ErrorReg('network error'))
+        })
+    }
+}
+
+export const ConfirmEmailAction = (code) =>{
+    return (dispatch) =>{
+        dispatch(StartConfirmMail())
+        let body = {
+            "code": code
+        };
+        fetch(`${auth}/confirm`, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(body),
+        })
+        .then(response => response.json())
+        .then((r)=>{
+            if(r?.message === 'Success.'){
+                dispatch(SuccessVery(r))
+            }
+        })
+        .catch((error)=>{
+            dispatch(ErrorConfirmEmail('network error'))
+        })
+        ;
+    }
+}
+
+export const LoginAction = (data) =>{
+    return (dispatch) =>{
+        dispatch(StartLogin())
+        let body = {
+            "email": data.email,
+            "password": data.password
+        };
+        
+        fetch(`${auth}/login`, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(body),
+        })
+        .then(response => response.json())
+        .then((r)=>{
+            if(r.message.includes('Wrong credentials.')){
+                dispatch(ErrorLogin('Wrong credentials.'))
+            }
+            else if(r.message.includes('Inactive account.')){
+                dispatch(ErrorLogin('Inactive account.'))
+            }
+            else {
+                dispatch(SuccessLogin(r))
+            }
+        })
+        .catch((error)=>{
+            dispatch(ErrorLogin('network error'))
         })
     }
 }

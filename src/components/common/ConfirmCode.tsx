@@ -8,6 +8,8 @@ import { postConfirmCode } from '../../state/user/action'
 import { useAppDispatch } from '../../hooks/redux'
 import R from '../../res'
 import useSmartNavigation from '../../hooks/useSmartNavigation'
+import { ConfirmEmailAction } from '../../../store/action/action'
+import { useSelector } from 'react-redux'
 
 // interface IProps {
 //     confirmCode: string
@@ -23,7 +25,7 @@ const ConfirmCodeField = () => {
 
     const blocks = useRef<TextInput[]>([])
     const navigation = useSmartNavigation()
-
+    const {auth} = useSelector((st:any)=>st)
     useEffect(() => {
         BackgroundTimer.runBackgroundTimer(() => {
             setRemainingTime(prevTime => {
@@ -41,6 +43,12 @@ const ConfirmCodeField = () => {
         }
     }, [])
 
+
+
+    useEffect(()=>{
+        //@ts-ignore
+        navigation.navigate('ProfileType')
+    },[auth.successVerf])
     const handleResendConfirmation = () => {
         setRemainingTime(60)
     }
@@ -56,22 +64,22 @@ const ConfirmCodeField = () => {
 
         if (newConfirmCode.length === 4) {
             //@ts-ignore
-            dispatch(
-                postConfirmCode({
-                    data: { code: newConfirmCode.join('') },
-                    onSuccess: async () => {
-                        // @ts-ignore
-                        navigation.navigate(R.routes.PROFILE_TYPE)
-                    },
-                    onError: async () => {
-                        setError('Предоставленный код не совпадает или истек срок действия')
-                        //@ts-ignore
-                        // navigation.navigate(R.routes.PROFILE_TYPE)
-                    },
-                }),
-            )
+            // dispatch(
+            //     postConfirmCode({
+            //         data: { code: newConfirmCode.join('') },
+            //         onSuccess: async () => {
+            //             // @ts-ignore
+            //             navigation.navigate(R.routes.PROFILE_TYPE)
+            //         },
+            //         onError: async () => {
+            //             setError('Предоставленный код не совпадает или истек срок действия')
+            //             //@ts-ignore
+            //             // navigation.navigate(R.routes.PROFILE_TYPE)
+            //         },
+            //     }),
+            // )
+            dispatch(ConfirmEmailAction(newConfirmCode))
         }
-
         if (index < 3 && text.length === 1) {
             blocks.current[index + 1].focus()
         }
