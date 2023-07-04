@@ -16,15 +16,15 @@ export const RegAction = (data) =>{
             "password": data.password,
             "password_confirmation":data.password_confirmation
         };
-        fetch(`auth/register`, {
+
+        fetch(`${auth}/register`, {
             method: "POST",
             headers,
             body: JSON.stringify(body),
         })
         .then(response => response.json())
         .then((r)=>{
-            console.log(r.message)
-            if(r.message === 'Success.'){
+            if(r?.message === 'Success.'){
                 dispatch(SuccessReg(r))
             }
             else {
@@ -37,7 +37,8 @@ export const RegAction = (data) =>{
             }
         })
         .catch((error)=>{
-            dispatch(ErrorReg(error))
+            console.log(error)
+            dispatch(ErrorReg('network error'))
         })
     }
 }
