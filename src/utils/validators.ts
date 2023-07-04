@@ -13,7 +13,6 @@ export function required(value: string) {
     if (value === '' || value === null || value === undefined || value.length === 0) {
         return 'Это поле обязательно к заполнению'
     }
-    
 }
 
 export function LoginRequired(value: string) {

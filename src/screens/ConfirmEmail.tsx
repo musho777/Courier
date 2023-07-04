@@ -22,7 +22,6 @@ export default function ConfirmEmail() {
     // useEffect(() => {
     //     onSubmit()
     // })
-    //@ts-ignore
 
     return (
         <View style={[styles.container, { paddingTop: safeAreaInsets.top + 33 }]}>
