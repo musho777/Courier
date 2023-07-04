@@ -56,7 +56,6 @@ const ConfirmCodeField = () => {
 
         if (newConfirmCode.length === 4) {
             //@ts-ignore
-            console.log('OTPku', newConfirmCode.join(''))
             dispatch(
                 postConfirmCode({
                     data: { code: newConfirmCode.join('') },
@@ -144,7 +143,7 @@ const CustomKeyboard = ({ handleKeyboardPress }: { handleKeyboardPress: (value: 
         <View style={styles.keyboard}>
             {keys.map((key, index) => {
                 if (!key) {
-                    return <View style={{ flexBasis: '33%' }} />
+                    return <View key={index} style={{ flexBasis: '33%' }} />
                 }
 
                 return (

@@ -1,4 +1,3 @@
-import { useFormikContext } from 'formik'
 import React from 'react'
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
@@ -23,7 +22,6 @@ export const FormButton = ({
     disabled = false,
     disableSubmit = false,
 }: IProps) => {
-    const form = useFormikContext()
 
     let configurations: {
         backgroundColors: string[]
@@ -37,18 +35,8 @@ export const FormButton = ({
         locations: [0.5, 0.9],
     }
 
-    const onSubmitPress = () => {
-        if (!disableSubmit) {
-            form.handleSubmit()
-        }
-
-        if (onPress) {
-            onPress()
-        }
-    }
-
     return (
-        <TouchableOpacity onPress={onSubmitPress} disabled={disabled || loading}>
+        <TouchableOpacity onPress={onPress} disabled={disabled || loading}>
             <View style={[styles.button, disabled ? styles.disabled : {}, style]}>
                 <LinearGradient
                     colors={configurations.backgroundColors}

@@ -13,6 +13,7 @@ export function required(value: string) {
     if (value === '' || value === null || value === undefined || value.length === 0) {
         return 'Это поле обязательно к заполнению'
     }
+    
 }
 
 export function LoginRequired(value: string) {
@@ -25,12 +26,14 @@ export function requir(value: string) {
     if (value.length < 7) {
         return 'Пароль должен быть не менее 8 символов'
     }
+    return ''
 }
 
 export function tel(value: string) {
     if (value.length < 11) {
         return 'Номер должен состоять не менее  11 цифр'
     }
+    return ''
 }
 
 export function email(value: string) {
@@ -41,6 +44,9 @@ export function email(value: string) {
     }
     if (value === '' || value === null || value === undefined || value.length === 0) {
         return 'Это поле обязательно к заполнению'
+    }
+    else{
+        return ''    
     }
 }
 
@@ -77,4 +83,11 @@ export function onlyLink(value: string) {
     if (!urlRegex.test(value)) {
         return 'Selected fields only accepts links'
     }
+}
+
+export function CheckPassword(value1:any,value2:any){
+    if(value1 === value2 && value1 !=='' && value2 !==''){
+        return ''
+    }
+    return '7777777'
 }
